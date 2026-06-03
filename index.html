@@ -1,11 +1,129 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Maven Site</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peak's Maven Repository</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0d1117;
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #58a6ff;
+        }
+
+        .folder {
+            margin-left: 20px;
+            padding: 4px;
+        }
+
+        .folder-name {
+            cursor: pointer;
+            color: #58a6ff;
+        }
+
+        .file {
+            margin-left: 40px;
+            color: #c9d1d9;
+        }
+
+        a {
+            color: #58a6ff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .card {
+            background: #161b22;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Peak885's Maven Repository</h1>
-    <p>Verification: The website is live!</p>
-    <a href="maven/">Go to Maven Repo</a>
+
+<h1>Peak's Maven Repository</h1>
+
+<div class="card">
+    <p>Maven repository browser</p>
+    <p>Automatically updates when new folders are pushed to GitHub.</p>
+</div>
+
+<div id="tree"></div>
+
+<script>
+const owner = "PeakSuperior885";
+const repo = "peaks_maven";
+
+async function loadDirectory(path = "") {
+    const url =
+        `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+
+    const response = await fetch(url);
+    return await response.json();
+}
+
+async function createTree(container, path = "") {
+    const items = await loadDirectory(path);
+
+    for (const item of items) {
+        const div = document.createElement("div");
+
+        if (item.type === "dir") {
+            div.className = "folder";
+
+            const title = document.createElement("div");
+            title.className = "folder-name";
+            title.textContent = "📁 " + item.name;
+
+            const children = document.createElement("div");
+            children.style.display = "none";
+
+            title.onclick = async () => {
+                if (!children.dataset.loaded) {
+                    await createTree(children, item.path);
+                    children.dataset.loaded = true;
+                }
+
+                children.style.display =
+                    children.style.display === "none"
+                        ? "block"
+                        : "none";
+            };
+
+            div.appendChild(title);
+            div.appendChild(children);
+        }
+        else {
+            div.className = "file";
+
+            const link = document.createElement("a");
+
+            link.href =
+                `https://raw.githubusercontent.com/${owner}/${repo}/main/${item.path}`;
+
+            link.textContent = item.name;
+            link.target = "_blank";
+
+            div.appendChild(link);
+        }
+
+        container.appendChild(div);
+    }
+}
+
+createTree(document.getElementById("tree"));
+</script>
+
 </body>
 </html>
