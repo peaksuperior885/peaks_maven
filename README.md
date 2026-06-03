@@ -1,2 +1,2 @@
-# peak885.github.io
+# peaksmaven
 a simple maven for my projects!
