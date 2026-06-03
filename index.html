@@ -62,12 +62,11 @@
 <div id="tree"></div>
 
 <script>
-const owner = "PeakSuperior885";
-const repo = "peaksuperior885.github.io"; // Ensure this matches your repo name
-const rootFolder = "files"; // Your new folder name
+const owner = "peaksuperior885";
+const repo = "peaks_maven";   
+const rootFolder = "files";
 
 async function loadDirectory(path = "") {
-    // If path is empty, we start at the rootFolder
     const targetPath = path === "" ? rootFolder : path;
     const url = `https://api.github.com/repos/${owner}/${repo}/contents/${targetPath}`;
 
@@ -103,7 +102,6 @@ async function createTree(container, path = "") {
             div.className = "file";
             const link = document.createElement("a");
             
-            // The download attribute forces the browser to prompt a download
             link.href = item.download_url; 
             link.textContent = "📄 " + item.name;
             link.setAttribute("download", item.name); 
