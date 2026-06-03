@@ -61,6 +61,32 @@
 
 <div id="tree"></div>
 
+<div class="card">
+    <h2>How to use this repository</h2>
+    <p>Add this to your project configuration to start using the plugins:</p>
+    
+    <h3>Gradle (Groovy)</h3>
+    <pre style="background: #0d1117; padding: 10px; border-radius: 5px; color: #79c0ff;">
+repositories {
+    maven { url "https://peaksuperior885.github.io/peaks_maven/files/" }
+}</pre>
+
+    <h3>Gradle (Kotlin DSL)</h3>
+    <pre style="background: #0d1117; padding: 10px; border-radius: 5px; color: #79c0ff;">
+repositories {
+    maven(url = "https://peaksuperior885.github.io/peaks_maven/files/")
+}</pre>
+
+    <h3>Maven</h3>
+    <pre style="background: #0d1117; padding: 10px; border-radius: 5px; color: #79c0ff;">
+&lt;repositories&gt;
+    &lt;repository&gt;
+        &lt;id&gt;peak-repo&lt;/id&gt;
+        &lt;url&gt;https://peaksuperior885.github.io/peaks_maven/files/&lt;/url&gt;
+    &lt;/repository&gt;
+&lt;/repositories&gt;</pre>
+</div>
+
 <script>
 const owner = "peaksuperior885";
 const repo = "peaks_maven";   
