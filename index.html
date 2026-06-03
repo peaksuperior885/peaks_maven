@@ -63,11 +63,13 @@
 
 <script>
 const owner = "PeakSuperior885";
-const repo = "peaks_maven";
+const repo = "peaksuperior885.github.io"; // Ensure this matches your repo name
+const rootFolder = "files"; // Your new folder name
 
 async function loadDirectory(path = "") {
-    const url =
-        `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+    // If path is empty, we start at the rootFolder
+    const targetPath = path === "" ? rootFolder : path;
+    const url = `https://api.github.com/repos/${owner}/${repo}/contents/${targetPath}`;
 
     const response = await fetch(url);
     return await response.json();
@@ -81,11 +83,9 @@ async function createTree(container, path = "") {
 
         if (item.type === "dir") {
             div.className = "folder";
-
             const title = document.createElement("div");
             title.className = "folder-name";
             title.textContent = "📁 " + item.name;
-
             const children = document.createElement("div");
             children.style.display = "none";
 
@@ -94,30 +94,23 @@ async function createTree(container, path = "") {
                     await createTree(children, item.path);
                     children.dataset.loaded = true;
                 }
-
-                children.style.display =
-                    children.style.display === "none"
-                        ? "block"
-                        : "none";
+                children.style.display = children.style.display === "none" ? "block" : "none";
             };
 
             div.appendChild(title);
             div.appendChild(children);
-        }
-        else {
+        } else {
             div.className = "file";
-
             const link = document.createElement("a");
-
-            link.href =
-                `https://raw.githubusercontent.com/${owner}/${repo}/main/${item.path}`;
-
-            link.textContent = item.name;
+            
+            // The download attribute forces the browser to prompt a download
+            link.href = item.download_url; 
+            link.textContent = "📄 " + item.name;
+            link.setAttribute("download", item.name); 
             link.target = "_blank";
 
             div.appendChild(link);
         }
-
         container.appendChild(div);
     }
 }
