@@ -1,145 +1,251 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Peak's Maven Repository</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #0d1117;
-            color: white;
-            margin: 0;
-            padding: 20px;
-        }
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-mono,monospace);background:#0d1117;color:#c9d1d9;padding:20px;min-height:100vh}
+h1{color:#58a6ff;font-size:22px;font-weight:500;margin-bottom:4px;font-family:var(--font-sans,sans-serif)}
+.subtitle{color:#8b949e;font-size:14px;margin-bottom:16px}
+.card{background:#161b22;border:0.5px solid #30363d;border-radius:8px;padding:16px;margin-bottom:16px}
+.card h2{color:#e6edf3;font-size:16px;font-weight:500;margin-bottom:12px;font-family:var(--font-sans)}
+.card h3{color:#8b949e;font-size:13px;font-weight:500;margin:12px 0 6px;text-transform:uppercase;letter-spacing:.05em;font-family:var(--font-sans)}
+.url-bar{background:#0d1117;border:0.5px solid #30363d;border-radius:6px;padding:8px 12px;font-size:13px;color:#79c0ff;margin-bottom:12px;display:flex;align-items:center;gap:8px;overflow:hidden}
+.url-bar i{color:#8b949e;flex-shrink:0}
+.url-bar span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.breadcrumb{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-bottom:12px}
+.breadcrumb a{color:#58a6ff;font-size:13px;text-decoration:none;cursor:pointer}
+.breadcrumb a:hover{text-decoration:underline}
+.breadcrumb span{color:#8b949e;font-size:13px}
+.folder-row{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:pointer;user-select:none;transition:background .1s}
+.folder-row:hover{background:#21262d}
+.folder-row i{color:#e3b341;font-size:16px;flex-shrink:0}
+.folder-row .name{color:#58a6ff;font-size:14px}
+.folder-row .chevron{margin-left:auto;color:#8b949e;font-size:14px;transition:transform .2s}
+.folder-row.open .chevron{transform:rotate(180deg)}
+.file-row{display:flex;align-items:center;gap:8px;padding:5px 8px 5px 32px;border-radius:6px}
+.file-row:hover{background:#21262d}
+.file-row i{color:#8b949e;font-size:14px;flex-shrink:0}
+.file-row a{color:#c9d1d9;font-size:13px;text-decoration:none}
+.file-row a:hover{color:#58a6ff;text-decoration:underline}
+.children{margin-left:16px;border-left:1px solid #21262d;padding-left:4px}
+.impl-block{background:#0d1117;border:0.5px solid #30363d;border-radius:6px;padding:12px 14px;margin:8px 0 4px}
+.impl-block .impl-title{color:#8b949e;font-size:12px;margin-bottom:8px;font-family:var(--font-sans)}
+pre{background:#0d1117;border:0.5px solid #21262d;border-radius:5px;padding:10px 12px;font-size:12px;color:#79c0ff;overflow-x:auto;white-space:pre;margin:4px 0 10px;font-family:var(--font-mono,monospace);line-height:1.5}
+.copy-btn{background:transparent;border:0.5px solid #30363d;border-radius:4px;color:#8b949e;cursor:pointer;font-size:11px;padding:3px 8px;float:right;margin-top:-2px;font-family:var(--font-sans)}
+.copy-btn:hover{color:#c9d1d9;border-color:#8b949e}
+.loading{color:#8b949e;font-size:13px;padding:8px}
+.tabs{display:flex;gap:4px;margin-bottom:8px}
+.tab{background:transparent;border:0.5px solid #30363d;border-radius:4px;color:#8b949e;cursor:pointer;font-size:12px;padding:4px 10px;font-family:var(--font-mono)}
+.tab.active{background:#21262d;color:#e6edf3;border-color:#58a6ff}
+.tab-content{display:none}
+.tab-content.active{display:block}
+.empty{color:#8b949e;font-size:13px;padding:8px;font-style:italic}
+</style>
 
-        h1 {
-            color: #58a6ff;
-        }
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
 
-        .folder {
-            margin-left: 20px;
-            padding: 4px;
-        }
-
-        .folder-name {
-            cursor: pointer;
-            color: #58a6ff;
-        }
-
-        .file {
-            margin-left: 40px;
-            color: #c9d1d9;
-        }
-
-        a {
-            color: #58a6ff;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        .card {
-            background: #161b22;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 15px;
-        }
-    </style>
-</head>
-<body>
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Peak's Maven Repository browser — navigate folders to view artifacts and copy dependency snippets</h2>
 
 <h1>Peak's Maven Repository</h1>
+<p class="subtitle">Automatically updates when new folders are pushed to GitHub.</p>
 
 <div class="card">
-    <p>Maven repository browser</p>
-    <p>Automatically updates when new folders are pushed to GitHub.</p>
+  <div class="url-bar">
+    <i class="ti ti-link" aria-hidden="true"></i>
+    <span id="url-display">peaksuperior885.github.io/peaks_maven/files/</span>
+  </div>
+  <div class="breadcrumb" id="breadcrumb"></div>
+  <div id="tree"></div>
 </div>
 
-<div id="tree"></div>
-
-<div class="card">
-    <h2>How to use this repository</h2>
-    <p>Add this to your project configuration to start using the plugins:</p>
-    
-    <h3>Gradle (Groovy)</h3>
-    <pre style="background: #0d1117; padding: 10px; border-radius: 5px; color: #79c0ff;">
-repositories {
+<div class="card" id="impl-panel" style="display:none">
+  <h2><i class="ti ti-package" aria-hidden="true" style="font-size:16px;vertical-align:-2px;margin-right:6px"></i><span id="impl-artifact-title">Dependency</span></h2>
+  <p style="font-size:13px;color:#8b949e;margin-bottom:12px" id="impl-desc"></p>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('groovy')">Gradle (Groovy)</button>
+    <button class="tab" onclick="switchTab('kotlin')">Gradle (Kotlin)</button>
+    <button class="tab" onclick="switchTab('mvn')">Maven</button>
+  </div>
+  <div class="tab-content active" id="tab-groovy"></div>
+  <div class="tab-content" id="tab-kotlin"></div>
+  <div class="tab-content" id="tab-mvn"></div>
+  <h3>Repository</h3>
+  <div class="tabs">
+    <button class="tab active" onclick="switchRepoTab('rgroovy')">Gradle (Groovy)</button>
+    <button class="tab" onclick="switchRepoTab('rkotlin')">Gradle (Kotlin)</button>
+    <button class="tab" onclick="switchRepoTab('rmvn')">Maven</button>
+  </div>
+  <div class="tab-content active" id="tab-rgroovy"><pre>repositories {
     maven { url "https://peaksuperior885.github.io/peaks_maven/files/" }
-}</pre>
-
-    <h3>Gradle (Kotlin DSL)</h3>
-    <pre style="background: #0d1117; padding: 10px; border-radius: 5px; color: #79c0ff;">
-repositories {
+}</pre></div>
+  <div class="tab-content" id="tab-rkotlin"><pre>repositories {
     maven(url = "https://peaksuperior885.github.io/peaks_maven/files/")
-}</pre>
-
-    <h3>Maven</h3>
-    <pre style="background: #0d1117; padding: 10px; border-radius: 5px; color: #79c0ff;">
-&lt;repositories&gt;
+}</pre></div>
+  <div class="tab-content" id="tab-rmvn"><pre>&lt;repositories&gt;
     &lt;repository&gt;
         &lt;id&gt;peak-repo&lt;/id&gt;
         &lt;url&gt;https://peaksuperior885.github.io/peaks_maven/files/&lt;/url&gt;
     &lt;/repository&gt;
-&lt;/repositories&gt;</pre>
+&lt;/repositories&gt;</pre></div>
 </div>
 
 <script>
-const owner = "peaksuperior885";
-const repo = "peaks_maven";   
-const rootFolder = "files";
+const owner="peaksuperior885",repo="peaks_maven",rootFolder="files";
+const BASE_URL="https://peaksuperior885.github.io/peaks_maven/files/";
+let currentPath=[];
+let activeTab='groovy',activeRepoTab='rgroovy';
 
-async function loadDirectory(path = "") {
-    const targetPath = path === "" ? rootFolder : path;
-    const url = `https://api.github.com/repos/${owner}/${repo}/contents/${targetPath}`;
-
-    const response = await fetch(url);
-    return await response.json();
+function updateURL(pathSegments){
+  const rel=pathSegments.join('/');
+  const display="peaksuperior885.github.io/peaks_maven/files/"+(rel?rel+'/':'');
+  document.getElementById('url-display').textContent=display;
+  try{history.replaceState({},'',window.location.pathname+(rel?'?path='+encodeURIComponent(rel):window.location.search))}catch(e){}
 }
 
-async function createTree(container, path = "") {
-    const items = await loadDirectory(path);
+function buildBreadcrumb(pathSegments){
+  const bc=document.getElementById('breadcrumb');
+  bc.innerHTML='';
+  const home=document.createElement('a');
+  home.textContent='files';
+  home.onclick=()=>navigate([]);
+  bc.appendChild(home);
+  pathSegments.forEach((seg,i)=>{
+    const sep=document.createElement('span');
+    sep.textContent=' / ';
+    bc.appendChild(sep);
+    const a=document.createElement('a');
+    a.textContent=seg;
+    const target=pathSegments.slice(0,i+1);
+    a.onclick=()=>navigate(target);
+    bc.appendChild(a);
+  });
+}
 
-    for (const item of items) {
-        const div = document.createElement("div");
+async function loadDirectory(path){
+  const targetPath=path===''?rootFolder:path;
+  const url=`https://api.github.com/repos/${owner}/${repo}/contents/${targetPath}`;
+  const r=await fetch(url);
+  if(!r.ok)return[];
+  return await r.json();
+}
 
-        if (item.type === "dir") {
-            div.className = "folder";
-            const title = document.createElement("div");
-            title.className = "folder-name";
-            title.textContent = "📁 " + item.name;
-            const children = document.createElement("div");
-            children.style.display = "none";
+function pathToMaven(fullPath){
+  const parts=fullPath.replace(rootFolder+'/','').split('/');
+  if(parts.length<3)return null;
+  const version=parts[parts.length-1];
+  const artifact=parts[parts.length-2];
+  const group=parts.slice(0,parts.length-2).join('.');
+  return{group,artifact,version};
+}
 
-            title.onclick = async () => {
-                if (!children.dataset.loaded) {
-                    await createTree(children, item.path);
-                    children.dataset.loaded = true;
-                }
-                children.style.display = children.style.display === "none" ? "block" : "none";
-            };
+function showImplPanel(coords,fullPath){
+  const panel=document.getElementById('impl-panel');
+  if(!coords){panel.style.display='none';return;}
+  const{group,artifact,version}=coords;
+  panel.style.display='block';
+  document.getElementById('impl-artifact-title').textContent=`${artifact} ${version}`;
+  document.getElementById('impl-desc').textContent=`${group}:${artifact}:${version}`;
+  document.getElementById('tab-groovy').innerHTML=makeBlock(`implementation '${group}:${artifact}:${version}'`,'groovy-dep');
+  document.getElementById('tab-kotlin').innerHTML=makeBlock(`implementation("${group}:${artifact}:${version}")`,'kotlin-dep');
+  document.getElementById('tab-mvn').innerHTML=makeBlock(`<dependency>\n    <groupId>${group}</groupId>\n    <artifactId>${artifact}</artifactId>\n    <version>${version}</version>\n</dependency>`,'mvn-dep');
+}
 
-            div.appendChild(title);
-            div.appendChild(children);
-        } else {
-            div.className = "file";
-            const link = document.createElement("a");
-            
-            link.href = item.download_url; 
-            link.textContent = "📄 " + item.name;
-            link.setAttribute("download", item.name); 
-            link.target = "_blank";
-
-            div.appendChild(link);
-        }
-        container.appendChild(div);
+function makeBlock(code,id){
+  return`<button class="copy-btn" onclick="copyCode('${id}')">Copy</button><pre id="${id}">${escapeHtml(code)}</pre>`;
+}
+function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function copyCode(id){
+  const el=document.getElementById(id);
+  if(el)navigator.clipboard.writeText(el.textContent).catch(()=>{});
+  const btn=el&&el.previousElementSibling;
+  if(btn){btn.textContent='Copied!';setTimeout(()=>btn.textContent='Copy',1500)}
+}
+function switchTab(name){
+  activeTab=name;
+  document.querySelectorAll('.tabs').forEach((tabGroup,i)=>{
+    if(i===0){
+      tabGroup.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.getAttribute('onclick').includes("'"+name+"'")));
     }
+  });
+  ['groovy','kotlin','mvn'].forEach(t=>{
+    const el=document.getElementById('tab-'+t);
+    if(el)el.classList.toggle('active',t===name);
+  });
+}
+function switchRepoTab(name){
+  activeRepoTab=name;
+  const allTabs=document.querySelectorAll('.tabs');
+  if(allTabs[1]){
+    allTabs[1].querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.getAttribute('onclick').includes("'"+name+"'")));
+  }
+  ['rgroovy','rkotlin','rmvn'].forEach(t=>{
+    const el=document.getElementById('tab-'+t);
+    if(el)el.classList.toggle('active',t===name);
+  });
 }
 
-createTree(document.getElementById("tree"));
+async function renderTree(container,path,segments){
+  container.innerHTML='<div class="loading">Loading...</div>';
+  const items=await loadDirectory(path);
+  container.innerHTML='';
+  if(!items.length){container.innerHTML='<div class="empty">Empty directory</div>';return;}
+  for(const item of items){
+    if(item.name==='.nojekyll'||item.name==='index.html')continue;
+    const div=document.createElement('div');
+    if(item.type==='dir'){
+      div.className='folder-row';
+      div.innerHTML=`<i class="ti ti-folder-filled" aria-hidden="true"></i><span class="name">${item.name}</span><i class="ti ti-chevron-down chevron" aria-hidden="true"></i>`;
+      const children=document.createElement('div');
+      children.className='children';
+      children.style.display='none';
+      const newSegs=[...segments,item.name];
+      div.onclick=async(e)=>{
+        e.stopPropagation();
+        const isOpen=children.style.display!=='none';
+        if(isOpen){
+          children.style.display='none';
+          div.classList.remove('open');
+        }else{
+          div.classList.add('open');
+          children.style.display='block';
+          if(!children.dataset.loaded){
+            await renderTree(children,item.path,newSegs);
+            children.dataset.loaded='1';
+          }
+          const coords=pathToMaven(item.path);
+          if(coords)showImplPanel(coords,item.path);
+        }
+        updateURL(newSegs);
+        buildBreadcrumb(newSegs);
+      };
+      container.appendChild(div);
+      container.appendChild(children);
+    }else{
+      div.className='file-row';
+      const ext=item.name.split('.').pop();
+      const icon=ext==='jar'?'ti-package':ext==='xml'?'ti-file-code':ext==='pom'?'ti-file-description':'ti-file';
+      const link=document.createElement('a');
+      link.href=item.download_url;
+      link.textContent=item.name;
+      link.setAttribute('download',item.name);
+      link.target='_blank';
+      div.innerHTML=`<i class="ti ${icon}" aria-hidden="true" style="margin-left:0"></i>`;
+      div.appendChild(link);
+      container.appendChild(div);
+    }
+  }
+}
+
+async function navigate(segments){
+  currentPath=segments;
+  updateURL(segments);
+  buildBreadcrumb(segments);
+  const path=segments.length===0?rootFolder:rootFolder+'/'+segments.join('/');
+  await renderTree(document.getElementById('tree'),path,segments);
+  if(segments.length===0)document.getElementById('impl-panel').style.display='none';
+}
+
+navigate([]);
 </script>
 
 </body>
