@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.embeddedt.embeddium</groupId>
+    <groupId>org.embeddedt</groupId>
     <artifactId>beddium</artifactId>
     <version>1.0.10+mc1.21.1</version>
 
