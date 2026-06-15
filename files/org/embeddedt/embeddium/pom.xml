@@ -1,0 +1,15 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.basdxz.archive</groupId>
+    <artifactId>beddium</artifactId>
+    <version>1.0.10+mc1.21.1</version>
+
+    <name>Beddium</name>
+
+    <description>
+        Forge 1.21.1 port of Embeddium 1.0.10.
+        Original source code lost following drive failure.
+        Archived binary release.
+    </description>
+</project>
