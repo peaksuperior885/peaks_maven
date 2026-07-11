@@ -1,0 +1,90 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.peak885.Jarjar",
+    "module": "jarjar",
+    "version": "1.2-BETA",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.14"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "jarjar-1.2-BETA.jar",
+          "url": "jarjar-1.2-BETA.jar",
+          "size": 341085,
+          "sha512": "ce860ec884c43ca26714e52d623c36efdb019e86ba072fc9816020f9159b47d0c1b0a50f54495b40db165386a2f7fdd56eafcb19d8792ebaf9b37027e61d1b22",
+          "sha256": "7528800fda2d6be9639dc09a7298dcc1a2d3f768a171c76c2d79892c0752cafd",
+          "sha1": "dc693b368d122e4a4ed8c71ade37a8fbe98e311a",
+          "md5": "9581147990b7b47a8b131655af41fbce"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "com.google.code.gson",
+          "module": "gson",
+          "version": {
+            "requires": "2.14.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "jarjar-1.2-BETA.jar",
+          "url": "jarjar-1.2-BETA.jar",
+          "size": 341085,
+          "sha512": "ce860ec884c43ca26714e52d623c36efdb019e86ba072fc9816020f9159b47d0c1b0a50f54495b40db165386a2f7fdd56eafcb19d8792ebaf9b37027e61d1b22",
+          "sha256": "7528800fda2d6be9639dc09a7298dcc1a2d3f768a171c76c2d79892c0752cafd",
+          "sha1": "dc693b368d122e4a4ed8c71ade37a8fbe98e311a",
+          "md5": "9581147990b7b47a8b131655af41fbce"
+        }
+      ]
+    },
+    {
+      "name": "shadowRuntimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "shadowed",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "jarjar-1.2-BETA.jar",
+          "url": "jarjar-1.2-BETA.jar",
+          "size": 341085,
+          "sha512": "ce860ec884c43ca26714e52d623c36efdb019e86ba072fc9816020f9159b47d0c1b0a50f54495b40db165386a2f7fdd56eafcb19d8792ebaf9b37027e61d1b22",
+          "sha256": "7528800fda2d6be9639dc09a7298dcc1a2d3f768a171c76c2d79892c0752cafd",
+          "sha1": "dc693b368d122e4a4ed8c71ade37a8fbe98e311a",
+          "md5": "9581147990b7b47a8b131655af41fbce"
+        }
+      ]
+    }
+  ]
+}

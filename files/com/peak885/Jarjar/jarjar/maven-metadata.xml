@@ -3,10 +3,11 @@
   <groupId>com.peak885.Jarjar</groupId>
   <artifactId>jarjar</artifactId>
   <versioning>
-    <latest>1.0-SNAPSHOT</latest>
+    <latest>1.2-BETA</latest>
+    <release>1.2-BETA</release>
     <versions>
-      <version>1.0-SNAPSHOT</version>
+      <version>1.2-BETA</version>
     </versions>
-    <lastUpdated>20260603190713</lastUpdated>
+    <lastUpdated>20260711144728</lastUpdated>
   </versioning>
 </metadata>
