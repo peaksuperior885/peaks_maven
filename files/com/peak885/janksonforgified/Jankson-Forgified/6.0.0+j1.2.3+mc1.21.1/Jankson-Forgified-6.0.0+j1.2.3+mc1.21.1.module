@@ -1,0 +1,125 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.peak885.janksonforgified",
+    "module": "Jankson-Forgified",
+    "version": "6.0.0+j1.2.3+mc1.21.1",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.14"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 21,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "Jankson-Forgified-6.0.0+j1.2.3+mc1.21.1.jar",
+          "url": "Jankson-Forgified-6.0.0+j1.2.3+mc1.21.1.jar",
+          "size": 121932,
+          "sha512": "3aa1d0a814126097b50761a4431f05f9a05d75e2e61f141dbce47c68dc35ffda14528da221152f7aed5289b659853f7ccb41429130f98a458d21a988c3f768a0",
+          "sha256": "386ece361126ca71f7ae3a3639a6d999a5e4c96200ee3fb0957078ac08a6afe9",
+          "sha1": "920e6d50cf81c6a717b74a80e24afc4c32f00a6a",
+          "md5": "598e2a5341a4467c7f1230a1b84155d2"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 21,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "net.minecraftforge",
+          "module": "forge",
+          "version": {
+            "requires": "1.21.1-52.1.0_mapped_parchment_2024.11.17-1.21.1"
+          }
+        },
+        {
+          "group": "blue.endless",
+          "module": "jankson",
+          "version": {
+            "requires": "1.2.3"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "Jankson-Forgified-6.0.0+j1.2.3+mc1.21.1.jar",
+          "url": "Jankson-Forgified-6.0.0+j1.2.3+mc1.21.1.jar",
+          "size": 121932,
+          "sha512": "3aa1d0a814126097b50761a4431f05f9a05d75e2e61f141dbce47c68dc35ffda14528da221152f7aed5289b659853f7ccb41429130f98a458d21a988c3f768a0",
+          "sha256": "386ece361126ca71f7ae3a3639a6d999a5e4c96200ee3fb0957078ac08a6afe9",
+          "sha1": "920e6d50cf81c6a717b74a80e24afc4c32f00a6a",
+          "md5": "598e2a5341a4467c7f1230a1b84155d2"
+        }
+      ]
+    },
+    {
+      "name": "shadowRuntimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "shadowed",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "blue.endless",
+          "module": "jankson",
+          "version": {
+            "requires": "1.2.3"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "Jankson-Forgified-6.0.0+j1.2.3+mc1.21.1.jar",
+          "url": "Jankson-Forgified-6.0.0+j1.2.3+mc1.21.1.jar",
+          "size": 121932,
+          "sha512": "3aa1d0a814126097b50761a4431f05f9a05d75e2e61f141dbce47c68dc35ffda14528da221152f7aed5289b659853f7ccb41429130f98a458d21a988c3f768a0",
+          "sha256": "386ece361126ca71f7ae3a3639a6d999a5e4c96200ee3fb0957078ac08a6afe9",
+          "sha1": "920e6d50cf81c6a717b74a80e24afc4c32f00a6a",
+          "md5": "598e2a5341a4467c7f1230a1b84155d2"
+        }
+      ]
+    },
+    {
+      "name": "sourcesElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "Jankson-Forgified-6.0.0+j1.2.3+mc1.21.1-sources.jar",
+          "url": "Jankson-Forgified-6.0.0+j1.2.3+mc1.21.1-sources.jar",
+          "size": 33657,
+          "sha512": "f632d7b73df42e625103c45d3d8ae35cf17774615fd47f6b5af05c986f6c2167d8c21f584fc06783c9127893b99f923de212ee875a144697ec4356e44d71d3c4",
+          "sha256": "0bf9795a9882ccf7e1de534fe0babdc4a0f497d4708d2f5da63977ea485a851c",
+          "sha1": "10495b1b1b3436b215103420771411a649f13a3d",
+          "md5": "89537af9087921aa5e879bdb7446e845"
+        }
+      ]
+    }
+  ]
+}
