@@ -27,11 +27,11 @@
         {
           "name": "LibGuiForgified-0.1.2+1.21.1.jar",
           "url": "LibGuiForgified-0.1.2+1.21.1.jar",
-          "size": 602838,
-          "sha512": "db8eecfe41546e240d7c8028415507d7ae9c90701f327e954e5f3f14ad8a8ed69aefbef50d6e61b3c9d4f5844fb63405955d56a36a83de74f62e149d4270a7bc",
-          "sha256": "e13601667991bb1285249ecf3f9168a207e115f91226c33c1ee60530011c0d03",
-          "sha1": "19213922373491905aad3487b318ce3259d0ee68",
-          "md5": "c4d7ef3c1688008df2be9313cd9fcd2a"
+          "size": 602817,
+          "sha512": "1c0cbb127325885d71829c7d2d8b62d4681fe1b0251cd0cbdb8cba8d35896db8165f94d3f04bdc098b8a1b0620506fd2edd73ccda2f9e099cb5f108eb541a280",
+          "sha256": "2664e40ec9bd4dda7d1aba3502cd512a35e17bc6be58a29f00815c9ce1990fc1",
+          "sha1": "a60b0f774b19ea539c89d3bac50c02f4dc7935be",
+          "md5": "03977706bdf70e20398fb61b0a9a59c2"
         }
       ]
     },
@@ -71,11 +71,11 @@
         {
           "name": "LibGuiForgified-0.1.2+1.21.1.jar",
           "url": "LibGuiForgified-0.1.2+1.21.1.jar",
-          "size": 602838,
-          "sha512": "db8eecfe41546e240d7c8028415507d7ae9c90701f327e954e5f3f14ad8a8ed69aefbef50d6e61b3c9d4f5844fb63405955d56a36a83de74f62e149d4270a7bc",
-          "sha256": "e13601667991bb1285249ecf3f9168a207e115f91226c33c1ee60530011c0d03",
-          "sha1": "19213922373491905aad3487b318ce3259d0ee68",
-          "md5": "c4d7ef3c1688008df2be9313cd9fcd2a"
+          "size": 602817,
+          "sha512": "1c0cbb127325885d71829c7d2d8b62d4681fe1b0251cd0cbdb8cba8d35896db8165f94d3f04bdc098b8a1b0620506fd2edd73ccda2f9e099cb5f108eb541a280",
+          "sha256": "2664e40ec9bd4dda7d1aba3502cd512a35e17bc6be58a29f00815c9ce1990fc1",
+          "sha1": "a60b0f774b19ea539c89d3bac50c02f4dc7935be",
+          "md5": "03977706bdf70e20398fb61b0a9a59c2"
         }
       ]
     },
@@ -91,11 +91,11 @@
         {
           "name": "LibGuiForgified-0.1.2+1.21.1-sources.jar",
           "url": "LibGuiForgified-0.1.2+1.21.1-sources.jar",
-          "size": 267232,
-          "sha512": "73e39b83deeed82452aaa3ca8e25c0683feb467553c2f4b48e1f5c440197e57ef0bb9a0b88c18ebd1287437fa4f59ac20ffc0b67df9610ea4a7381e206fdb800",
-          "sha256": "f4ce6870bc1161eea8e9f9f9904b0f4523915cd8c29a58578b39ae41961b8e4a",
-          "sha1": "913f696546cbb75a19c93a2e9048718278b34cdf",
-          "md5": "1639fdfe725f76c6b9896648c53b84be"
+          "size": 267207,
+          "sha512": "0c95033a61b7cdc14937ba4bb5d97b6ce573ae64a786e15b4846eea6a5459c6aa05cea183b27f0c88f17e03f1fc8189d896b0f81181b1324f71691ae14e465c1",
+          "sha256": "f86fa265fa2ae2c3602b02e6ceec4f91c0d6a371486b9678e730371cce2a0d02",
+          "sha1": "41802e60c0dfca92983a07e41ceb273cef9b0c7f",
+          "md5": "05ccfbf8f5280e1222c798ceae012b49"
         }
       ]
     },
@@ -112,11 +112,11 @@
         {
           "name": "LibGuiForgified-0.1.2+1.21.1.jar",
           "url": "LibGuiForgified-0.1.2+1.21.1.jar",
-          "size": 602838,
-          "sha512": "db8eecfe41546e240d7c8028415507d7ae9c90701f327e954e5f3f14ad8a8ed69aefbef50d6e61b3c9d4f5844fb63405955d56a36a83de74f62e149d4270a7bc",
-          "sha256": "e13601667991bb1285249ecf3f9168a207e115f91226c33c1ee60530011c0d03",
-          "sha1": "19213922373491905aad3487b318ce3259d0ee68",
-          "md5": "c4d7ef3c1688008df2be9313cd9fcd2a"
+          "size": 602817,
+          "sha512": "1c0cbb127325885d71829c7d2d8b62d4681fe1b0251cd0cbdb8cba8d35896db8165f94d3f04bdc098b8a1b0620506fd2edd73ccda2f9e099cb5f108eb541a280",
+          "sha256": "2664e40ec9bd4dda7d1aba3502cd512a35e17bc6be58a29f00815c9ce1990fc1",
+          "sha1": "a60b0f774b19ea539c89d3bac50c02f4dc7935be",
+          "md5": "03977706bdf70e20398fb61b0a9a59c2"
         }
       ]
     }
