@@ -3,11 +3,11 @@
   <groupId>com.peak885</groupId>
   <artifactId>LibGuiForgified</artifactId>
   <versioning>
-    <latest>0.1.2+1.21.1</latest>
-    <release>0.1.2+1.21.1</release>
+    <latest>0.1.3+1.21.1</latest>
+    <release>0.1.3+1.21.1</release>
     <versions>
-      <version>0.1.2+1.21.1</version>
+      <version>0.1.3+1.21.1</version>
     </versions>
-    <lastUpdated>20260712153849</lastUpdated>
+    <lastUpdated>20260712173126</lastUpdated>
   </versioning>
 </metadata>
