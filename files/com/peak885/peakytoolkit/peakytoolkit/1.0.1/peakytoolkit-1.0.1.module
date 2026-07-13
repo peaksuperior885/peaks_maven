@@ -1,0 +1,39 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.peak885.peakytoolkit",
+    "module": "peakytoolkit",
+    "version": "1.0.1",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.8"
+    }
+  },
+  "variants": [
+    {
+      "name": "shadowRuntimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "shadowed",
+        "org.gradle.jvm.version": 21,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "peakytoolkit-1.0.1-all.jar",
+          "url": "peakytoolkit-1.0.1-all.jar",
+          "size": 1603908,
+          "sha512": "2443721546096a65f35c1ba0cc325f1832e76d0669f0ed19870e7b73ad90d854a2185b4b51445ffe0587c53c11a9c26920962815b44736ae662d94cfb4ca7b54",
+          "sha256": "e33b2ec9bcfaaab6937cbbe6a5baf3145a7070ab97caa3bfcaa347ba2ff34dc6",
+          "sha1": "19547f0e4dd96345da30d018820a13fb5ff8c815",
+          "md5": "30076f0ed4707c2e22c7bef5486e1fce"
+        }
+      ]
+    }
+  ]
+}
