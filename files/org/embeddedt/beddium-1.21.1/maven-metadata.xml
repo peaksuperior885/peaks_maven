@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.embeddedt</groupId>
+  <artifactId>beddium-1.21.1</artifactId>
+  <versioning>
+    <latest>1.0.11+mc1.21.1</latest>
+    <release>1.0.11+mc1.21.1</release>
+    <versions>
+      <version>1.0.11+mc1.21.1</version>
+    </versions>
+    <lastUpdated>20260728163632</lastUpdated>
+  </versioning>
+</metadata>
