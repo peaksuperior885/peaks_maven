@@ -1,0 +1,39 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "net.irisshaders.iris",
+    "module": "oculus-mc1.21.1",
+    "version": "1.8.8",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.12"
+    }
+  },
+  "variants": [
+    {
+      "name": "shadowRuntimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "shadowed",
+        "org.gradle.jvm.version": 21,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "oculus-mc1.21.1-1.8.8.jar",
+          "url": "oculus-mc1.21.1-1.8.8.jar",
+          "size": 7707164,
+          "sha512": "3b5f99730073dfdf8041ae7da887fe3be395fe4ef9c95abb4e2976307be27171bd44e5b8966703e1748312ee7e49a88b655c6405a84dbecce0b4ce956b12dce8",
+          "sha256": "81770169a2793084e5c29b20b19ae786eef92bee96529a5bf324fe5fed8a787c",
+          "sha1": "19e71042a18e69491fb04b7785d8cb6fd83e2589",
+          "md5": "bc01030d973947ce4beb22878cedfad4"
+        }
+      ]
+    }
+  ]
+}
