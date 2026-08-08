@@ -185,6 +185,10 @@ h1{
 @keyframes spin{to{transform:rotate(360deg)}}
 .empty,.error-state{color:var(--text-faint);font-size:12.5px;padding:10px 8px;font-style:italic;font-family:var(--font-sans)}
 .error-state{color:#f0a5a5}
+.error-state .retry{
+  display:inline-block;margin-left:8px;color:var(--teal);cursor:pointer;text-decoration:underline;font-style:normal;
+}
+.source-note{color:var(--text-faint);font-size:11px;font-family:var(--font-sans);margin-top:10px}
 
 /* Tabs */
 .tabs{display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap}
@@ -218,7 +222,7 @@ pre{
 <body>
 
 <h1>Peak's Maven Repository</h1>
-<p class="subtitle">Automatically updates when new folders are pushed to GitHub. Type a path below to jump straight to it.</p>
+<p class="subtitle">Loads the whole file tree once from jsdelivr's CDN — no per-folder GitHub API calls, no rate limits. Type a path below to jump straight to it.</p>
 
 <div class="card">
   <div class="url-bar-wrap">
@@ -253,22 +257,24 @@ pre{
     <button class="tab" data-rtab="rmvn" onclick="switchRepoTab('rmvn')">Maven</button>
   </div>
   <div class="tab-content active" id="tab-rgroovy"><pre>repositories {
-    maven { url "https://raw.githubusercontent.com/peaksuperior885/peaks_maven/main/files/" }
+    maven { url "https://peaksuperior885.github.io/peaks_maven/files/" }
 }</pre></div>
   <div class="tab-content" id="tab-rkotlin"><pre>repositories {
-    maven(url = "https://raw.githubusercontent.com/peaksuperior885/peaks_maven/main/files/")
+    maven(url = "https://peaksuperior885.github.io/peaks_maven/files/")
 }</pre></div>
   <div class="tab-content" id="tab-rmvn"><pre>&lt;repositories&gt;
     &lt;repository&gt;
         &lt;id&gt;peak-repo&lt;/id&gt;
-        &lt;url&gt;https://raw.githubusercontent.com/peaksuperior885/peaks_maven/main/files/&lt;/url&gt;
+        &lt;url&gt;https://peaksuperior885.github.io/peaks_maven/files/&lt;/url&gt;
     &lt;/repository&gt;
 &lt;/repositories&gt;</pre></div>
 </div>
 
 <script>
-const owner="peaksuperior885",repo="peaks_maven",rootFolder="files";
+const owner="peaksuperior885",repo="peaks_maven",branch="main",rootFolder="files";
 let currentPath=[];
+let treeRoot=null;      // in-memory tree built once from jsdelivr's flat file list
+let treeLoadPromise=null;
 
 /* ---------- URL bar / breadcrumb ---------- */
 
@@ -320,18 +326,16 @@ function parseTypedPath(raw){
   return s.length?s.split('/').filter(Boolean):[];
 }
 
-/* Walk down the real GitHub tree confirming each segment exists (case-insensitive) */
-async function resolvePath(segments){
-  let apiPath=rootFolder;
+/* Walk the in-memory tree confirming each segment exists (case-insensitive) */
+function resolvePath(segments){
+  let node=treeRoot;
   const real=[];
   for(const seg of segments){
-    let items;
-    try{ items=await loadDirectory(apiPath); }
-    catch(e){ break; }
-    const match=items.find(it=>it.type==='dir'&&it.name.toLowerCase()===seg.toLowerCase());
-    if(!match) break;
-    real.push(match.name);
-    apiPath=match.path;
+    if(!node||node.type!=='dir') break;
+    const key=Object.keys(node.children).find(k=>k.toLowerCase()===seg.toLowerCase());
+    if(!key) break;
+    real.push(key);
+    node=node.children[key];
   }
   return real;
 }
@@ -339,14 +343,15 @@ async function resolvePath(segments){
 async function goToTypedPath(){
   const input=document.getElementById('url-input');
   const segments=parseTypedPath(input.value);
+  await ensureTreeLoaded();
   if(!segments.length){ setUrlHint('Press Enter or tap Go to jump to a package path.'); await navigate([]); return; }
   setUrlHint('Looking that up…');
-  const real=await resolvePath(segments);
+  const real=resolvePath(segments);
   await navigate(real);
   if(real.length===segments.length){
     setUrlHint('Jumped to /'+real.join('/'),'ok');
   }else if(real.length>0){
-    setUrlHint('Only found up to /'+real.join('/')+' — the rest doesn\'t exist','error');
+    setUrlHint("Only found up to /"+real.join('/')+" — the rest doesn't exist",'error');
   }else{
     setUrlHint('No matching folder at root','error');
   }
@@ -358,15 +363,77 @@ document.getElementById('url-input').addEventListener('keydown',e=>{
 });
 document.getElementById('url-input').addEventListener('focus',e=>e.target.select());
 
-/* ---------- GitHub data ---------- */
+/* ---------- Data loading: one request for the whole tree via jsdelivr ---------- */
 
-async function loadDirectory(path){
-  const targetPath=path===''?rootFolder:path;
-  const url=`https://api.github.com/repos/${owner}/${repo}/contents/${targetPath}`;
+let cachedSha=null;
+
+/* jsdelivr's package API needs an exact commit hash, not a branch name —
+   this is the one and only GitHub API call the whole page makes, ever. */
+async function resolveBranchSha(){
+  if(cachedSha) return cachedSha;
+  const url=`https://api.github.com/repos/${owner}/${repo}/branches/${branch}`;
   const r=await fetch(url);
-  if(r.status===403) throw new Error('rate-limited');
-  if(!r.ok) return [];
-  return await r.json();
+  if(r.status===403) throw new Error('github-rate-limited');
+  if(!r.ok) throw new Error('github-error-'+r.status);
+  const data=await r.json();
+  cachedSha=data.commit.sha;
+  return cachedSha;
+}
+
+async function fetchFlatFileList(){
+  const sha=await resolveBranchSha();
+  const url=`https://data.jsdelivr.com/v1/package/gh/${owner}/${repo}@${sha}/flat`;
+  const r=await fetch(url);
+  if(!r.ok) throw new Error('jsdelivr-error-'+r.status);
+  const data=await r.json();
+  return data.files||[];
+}
+
+function buildTree(files){
+  const root={type:'dir',name:'',path:rootFolder,children:{}};
+  for(const f of files){
+    const clean=f.name.replace(/^\/+/,'');
+    if(!clean.toLowerCase().startsWith(rootFolder.toLowerCase()+'/')) continue;
+    const rel=clean.slice(rootFolder.length+1);
+    if(!rel) continue;
+    const parts=rel.split('/').filter(Boolean);
+    let node=root;
+    let curPath=rootFolder;
+    for(let i=0;i<parts.length;i++){
+      const part=parts[i];
+      curPath+='/'+part;
+      const isFile=i===parts.length-1;
+      if(isFile){
+        node.children[part]={type:'file',name:part,path:curPath,size:f.size};
+      }else{
+        if(!node.children[part]) node.children[part]={type:'dir',name:part,path:curPath,children:{}};
+        node=node.children[part];
+      }
+    }
+  }
+  return root;
+}
+
+function ensureTreeLoaded(){
+  if(treeRoot) return Promise.resolve(treeRoot);
+  if(treeLoadPromise) return treeLoadPromise;
+  treeLoadPromise=fetchFlatFileList().then(files=>{
+    treeRoot=buildTree(files);
+    return treeRoot;
+  }).catch(err=>{
+    treeLoadPromise=null; // allow retry
+    throw err;
+  });
+  return treeLoadPromise;
+}
+
+function getNode(segments){
+  let node=treeRoot;
+  for(const seg of segments){
+    if(!node||node.type!=='dir'||!node.children[seg]) return null;
+    node=node.children[seg];
+  }
+  return node;
 }
 
 function pathToMaven(fullPath){
@@ -383,6 +450,10 @@ function formatSize(bytes){
   if(bytes<1024) return bytes+' B';
   if(bytes<1024*1024) return (bytes/1024).toFixed(1)+' KB';
   return (bytes/1024/1024).toFixed(1)+' MB';
+}
+
+function downloadUrl(path){
+  return `https://${owner}.github.io/${repo}/${path}`;
 }
 
 /* ---------- Implementation panel ---------- */
@@ -418,18 +489,16 @@ function switchRepoTab(name){
   ['rgroovy','rkotlin','rmvn'].forEach(t=>document.getElementById('tab-'+t).classList.toggle('active',t===name));
 }
 
-/* ---------- Tree rendering ---------- */
+/* ---------- Tree rendering (all from the in-memory tree, no fetches) ---------- */
 
-async function renderTree(container,path,segments){
-  container.innerHTML='<div class="loading"><span class="spin"></span>Loading…</div>';
-  let items;
-  try{ items=await loadDirectory(path); }
-  catch(e){
-    container.innerHTML='<div class="error-state">GitHub API rate limit hit — try again in a bit.</div>';
+function renderTree(container,segments){
+  container.innerHTML='';
+  const node=segments.length?getNode(segments):treeRoot;
+  if(!node||node.type!=='dir'){
+    container.innerHTML='<div class="empty">Empty directory</div>';
     return;
   }
-  container.innerHTML='';
-  const visible=items.filter(it=>it.name!=='.nojekyll'&&it.name!=='index.html');
+  const visible=Object.values(node.children).filter(it=>it.name!=='.nojekyll'&&it.name!=='index.html');
   if(!visible.length){container.innerHTML='<div class="empty">Empty directory</div>';return;}
   visible.sort((a,b)=> a.type===b.type ? a.name.localeCompare(b.name) : (a.type==='dir'?-1:1));
 
@@ -442,7 +511,7 @@ async function renderTree(container,path,segments){
       children.className='children';
       children.style.display='none';
       const newSegs=[...segments,item.name];
-      div.onclick=async(e)=>{
+      div.onclick=(e)=>{
         e.stopPropagation();
         const isOpen=children.style.display!=='none';
         if(isOpen){
@@ -453,7 +522,7 @@ async function renderTree(container,path,segments){
           div.classList.add('open');
           children.style.display='block';
           if(!children.dataset.loaded){
-            await renderTree(children,item.path,newSegs);
+            renderTree(children,newSegs);
             children.dataset.loaded='1';
           }
           const coords=pathToMaven(item.path);
@@ -471,7 +540,7 @@ async function renderTree(container,path,segments){
       const ext=item.name.split('.').pop();
       const icon=ext==='jar'?'ti-package':ext==='xml'?'ti-file-code':ext==='pom'?'ti-file-description':'ti-file';
       const link=document.createElement('a');
-      link.href=item.download_url;
+      link.href=downloadUrl(item.path);
       link.textContent=item.name;
       link.setAttribute('download',item.name);
       link.target='_blank';
@@ -492,8 +561,18 @@ async function navigate(segments){
   currentPath=segments;
   updateURL(segments);
   buildBreadcrumb(segments);
-  const path=segments.length===0?rootFolder:rootFolder+'/'+segments.join('/');
-  await renderTree(document.getElementById('tree'),path,segments);
+  const treeEl=document.getElementById('tree');
+  treeEl.innerHTML='<div class="loading"><span class="spin"></span>Loading…</div>';
+  try{
+    await ensureTreeLoaded();
+  }catch(e){
+    const msg=(e&&e.message==='github-rate-limited')
+      ? "GitHub's API is rate-limiting this branch lookup right now — try again in a bit."
+      : 'Could not load the repo listing.';
+    treeEl.innerHTML='<div class="error-state">'+msg+'<span class="retry" onclick="navigate('+JSON.stringify(segments)+')">Retry</span></div>';
+    return;
+  }
+  renderTree(treeEl,segments);
   if(segments.length===0) showImplPanel(null);
 }
 
