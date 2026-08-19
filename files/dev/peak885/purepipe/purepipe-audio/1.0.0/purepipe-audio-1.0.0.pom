@@ -5,7 +5,6 @@
   <groupId>dev.peak885.purepipe</groupId>
   <artifactId>purepipe-audio</artifactId>
   <version>1.0.0</version>
-  <packaging>pom</packaging>
   <name>PurePipe Audio</name>
   <description>Pure Java audio streaming and decoding API</description>
 </project>
