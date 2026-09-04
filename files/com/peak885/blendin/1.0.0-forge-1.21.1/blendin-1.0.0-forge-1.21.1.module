@@ -1,0 +1,77 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.peak885",
+    "module": "blendin",
+    "version": "1.0.0-forge-1.21.1",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.8"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 21,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "blendin-1.0.0-forge-1.21.1-slim.jar",
+          "url": "blendin-1.0.0-forge-1.21.1-slim.jar",
+          "size": 814086,
+          "sha512": "2f226a8663a9f935eda3f4eca585b15a7d2897c5029103fa2cf04592944ab45b5a643404de460801a47ee80c9347788a5060ecd6f2b829567e0016c4944bf5ee",
+          "sha256": "54467ed198359b4410dcfbca9712f273d2a9927cb8957fccd549503324de16ee",
+          "sha1": "60ca733262722766e6a5f6f8589a9409237a2196",
+          "md5": "b10e381c8ab3ad4967195696e4711f70"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 21,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "net.sf.jopt-simple",
+          "module": "jopt-simple",
+          "version": {
+            "strictly": "5.0.4",
+            "requires": "5.0.4"
+          }
+        },
+        {
+          "group": "net.minecraftforge",
+          "module": "forge",
+          "version": {
+            "requires": "1.21.1-52.1.0_mapped_parchment_2024.11.17-1.21.1"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "blendin-1.0.0-forge-1.21.1-slim.jar",
+          "url": "blendin-1.0.0-forge-1.21.1-slim.jar",
+          "size": 814086,
+          "sha512": "2f226a8663a9f935eda3f4eca585b15a7d2897c5029103fa2cf04592944ab45b5a643404de460801a47ee80c9347788a5060ecd6f2b829567e0016c4944bf5ee",
+          "sha256": "54467ed198359b4410dcfbca9712f273d2a9927cb8957fccd549503324de16ee",
+          "sha1": "60ca733262722766e6a5f6f8589a9409237a2196",
+          "md5": "b10e381c8ab3ad4967195696e4711f70"
+        }
+      ]
+    }
+  ]
+}
