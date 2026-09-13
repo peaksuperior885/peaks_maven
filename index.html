@@ -271,6 +271,30 @@ pre{
 </div>
 
 <script>
+/* ---------- Simple Frontend Logger Utility ---------- */
+const RepoLogger = {
+  info(message, data = null) {
+    const timestamp = new Date().toISOString();
+    if (data) {
+      console.info(`[RepoLog INFO] [${timestamp}]: ${message}`, data);
+    } else {
+      console.info(`[RepoLog INFO] [${timestamp}]: ${message}`);
+    }
+  },
+  warn(message, data = null) {
+    const timestamp = new Date().toISOString();
+    if (data) {
+      console.warn(`[RepoLog WARN] [${timestamp}]: ${message}`, data);
+    } else {
+      console.warn(`[RepoLog WARN] [${timestamp}]: ${message}`);
+    }
+  },
+  error(message, errorObj = null) {
+    const timestamp = new Date().toISOString();
+    console.error(`[RepoLog ERROR] [${timestamp}]: ${message}`, errorObj || '');
+  }
+};
+
 const owner="peaksuperior885",repo="peaks_maven",branch="main",rootFolder="files";
 let currentPath=[];
 let treeRoot=null;      // in-memory tree built once from jsdelivr's flat file list
@@ -286,7 +310,9 @@ function updateURL(pathSegments){
   const input=document.getElementById('url-input');
   if(document.activeElement!==input) input.value=displayString(pathSegments);
   const rel=pathSegments.join('/');
-  try{history.replaceState({},'',window.location.pathname+(rel?'?path='+encodeURIComponent(rel):''))}catch(e){}
+  try{history.replaceState({},'',window.location.pathname+(rel?'?path='+encodeURIComponent(rel):''))}catch(e){
+    RepoLogger.warn('Failed to update browser history state', e);
+  }
 }
 
 function setUrlHint(text,mode){
@@ -343,6 +369,7 @@ function resolvePath(segments){
 async function goToTypedPath(){
   const input=document.getElementById('url-input');
   const segments=parseTypedPath(input.value);
+  RepoLogger.info('Attempting to jump to typed path', { raw: input.value, parsed: segments });
   await ensureTreeLoaded();
   if(!segments.length){ setUrlHint('Press Enter or tap Go to jump to a package path.'); await navigate([]); return; }
   setUrlHint('Looking that up…');
@@ -350,10 +377,13 @@ async function goToTypedPath(){
   await navigate(real);
   if(real.length===segments.length){
     setUrlHint('Jumped to /'+real.join('/'),'ok');
+    RepoLogger.info('Successfully jumped to path', { path: real.join('/') });
   }else if(real.length>0){
     setUrlHint("Only found up to /"+real.join('/')+" — the rest doesn't exist",'error');
+    RepoLogger.warn('Path only partially resolved', { requested: segments, resolved: real });
   }else{
     setUrlHint('No matching folder at root','error');
+    RepoLogger.warn('Path resolution failed completely at root', { requested: segments });
   }
 }
 
@@ -367,29 +397,41 @@ document.getElementById('url-input').addEventListener('focus',e=>e.target.select
 
 let cachedSha=null;
 
-/* jsdelivr's package API needs an exact commit hash, not a branch name —
-   this is the one and only GitHub API call the whole page makes, ever. */
 async function resolveBranchSha(){
   if(cachedSha) return cachedSha;
+  RepoLogger.info('Resolving GitHub branch SHA...', { owner, repo, branch });
   const url=`https://api.github.com/repos/${owner}/${repo}/branches/${branch}`;
   const r=await fetch(url);
-  if(r.status===403) throw new Error('github-rate-limited');
-  if(!r.ok) throw new Error('github-error-'+r.status);
+  if(r.status===403) {
+    RepoLogger.error('GitHub API rate limit hit while resolving branch SHA.');
+    throw new Error('github-rate-limited');
+  }
+  if(!r.ok) {
+    RepoLogger.error(`GitHub API error status: ${r.status}`);
+    throw new Error('github-error-'+r.status);
+  }
   const data=await r.json();
   cachedSha=data.commit.sha;
+  RepoLogger.info('Branch SHA resolved successfully', { sha: cachedSha });
   return cachedSha;
 }
 
 async function fetchFlatFileList(){
+  RepoLogger.info('Fetching flat file list from jsDelivr CDN...');
   const sha=await resolveBranchSha();
   const url=`https://data.jsdelivr.com/v1/package/gh/${owner}/${repo}@${sha}/flat`;
   const r=await fetch(url);
-  if(!r.ok) throw new Error('jsdelivr-error-'+r.status);
+  if(!r.ok) {
+    RepoLogger.error(`jsDelivr CDN error status: ${r.status}`, { url });
+    throw new Error('jsdelivr-error-'+r.status);
+  }
   const data=await r.json();
+  RepoLogger.info('Flat file list fetched successfully', { fileCount: data.files ? data.files.length : 0 });
   return data.files||[];
 }
 
 function buildTree(files){
+  RepoLogger.info('Building in-memory directory tree structure...');
   const root={type:'dir',name:'',path:rootFolder,children:{}};
   for(const f of files){
     const clean=f.name.replace(/^\/+/,'');
@@ -421,6 +463,7 @@ function ensureTreeLoaded(){
     treeRoot=buildTree(files);
     return treeRoot;
   }).catch(err=>{
+    RepoLogger.error('Failed to load/build repository tree', err);
     treeLoadPromise=null; // allow retry
     throw err;
   });
@@ -476,7 +519,7 @@ function makeBlock(code,id){
 function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function copyCode(id){
   const el=document.getElementById(id);
-  if(el) navigator.clipboard.writeText(el.textContent).catch(()=>{});
+  if(el) navigator.clipboard.writeText(el.textContent).catch(err=>RepoLogger.warn('Clipboard write failed', err));
   const btn=el&&el.previousElementSibling;
   if(btn){btn.textContent='Copied!';setTimeout(()=>btn.textContent='Copy',1400)}
 }
@@ -489,12 +532,13 @@ function switchRepoTab(name){
   ['rgroovy','rkotlin','rmvn'].forEach(t=>document.getElementById('tab-'+t).classList.toggle('active',t===name));
 }
 
-/* ---------- Tree rendering (all from the in-memory tree, no fetches) ---------- */
+/* ---------- Tree rendering ---------- */
 
 function renderTree(container,segments){
   container.innerHTML='';
   const node=segments.length?getNode(segments):treeRoot;
   if(!node||node.type!=='dir'){
+    RepoLogger.warn('Attempted to render non-directory or missing node path', { segments });
     container.innerHTML='<div class="empty">Empty directory</div>';
     return;
   }
@@ -578,6 +622,7 @@ async function navigate(segments){
 
 /* Load an initial path from ?path= if present, else root */
 (function init(){
+  RepoLogger.info('Initializing Maven repository UI viewer...');
   const params=new URLSearchParams(window.location.search);
   const initial=params.get('path');
   if(initial){
