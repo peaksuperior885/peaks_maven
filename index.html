@@ -223,7 +223,7 @@ pre{
 <body>
 
 <h1>Peak's Maven Repository</h1>
-<p class="subtitle">Loads the whole file tree once from jsdelivr's CDN — no per-folder GitHub API calls, no rate limits. Type a path below to jump straight to it.</p>
+<p class="subtitle">Loads the whole file tree in a single GitHub Trees API request — no per-folder calls. Type a path below to jump straight to it.</p>
 
 <div class="card">
   <div class="url-bar-wrap">
@@ -297,8 +297,10 @@ const RepoLogger = {
 };
 
 const owner="peaksuperior885",repo="peaks_maven",branch="main",rootFolder="files";
+const CACHE_KEY="peaks_maven_tree_v1";
+const CACHE_TTL_MS=10*60*1000;
 let currentPath=[];
-let treeRoot=null;      // in-memory tree built once from jsdelivr's flat file list
+let treeRoot=null;      // in-memory tree built once from GitHub's recursive tree listing
 let treeLoadPromise=null;
 
 /* ---------- URL bar / breadcrumb ---------- */
@@ -371,7 +373,13 @@ async function goToTypedPath(){
   const input=document.getElementById('url-input');
   const segments=parseTypedPath(input.value);
   RepoLogger.info('Attempting to jump to typed path', { raw: input.value, parsed: segments });
-  await ensureTreeLoaded();
+  try{
+    await ensureTreeLoaded();
+  }catch(e){
+    setUrlHint('Could not load the repo listing — see the error below.','error');
+    await navigate(segments);
+    return;
+  }
   if(!segments.length){ setUrlHint('Press Enter or tap Go to jump to a package path.'); await navigate([]); return; }
   setUrlHint('Looking that up…');
   const real=resolvePath(segments);
@@ -394,41 +402,62 @@ document.getElementById('url-input').addEventListener('keydown',e=>{
 });
 document.getElementById('url-input').addEventListener('focus',e=>e.target.select());
 
-/* ---------- Data loading: one request for the whole tree via jsdelivr ---------- */
+/* ---------- Data loading: one request for the whole tree via GitHub Trees API ---------- */
 
-let cachedSha=null;
+function readCache(){
+  try{
+    const raw=sessionStorage.getItem(CACHE_KEY);
+    if(!raw) return null;
+    const parsed=JSON.parse(raw);
+    if(!parsed||Date.now()-parsed.t>CACHE_TTL_MS) return null;
+    return parsed.files;
+  }catch(e){
+    return null;
+  }
+}
 
-async function resolveBranchSha(){
-  if(cachedSha) return cachedSha;
-  RepoLogger.info('Resolving GitHub branch SHA...', { owner, repo, branch });
-  const url=`https://api.github.com/repos/${owner}/${repo}/branches/${branch}`;
-  const r=await fetch(url);
-  if(r.status===403) {
-    RepoLogger.error('GitHub API rate limit hit while resolving branch SHA.');
-    throw new Error('github-rate-limited');
+function writeCache(files){
+  try{
+    sessionStorage.setItem(CACHE_KEY,JSON.stringify({t:Date.now(),files}));
+  }catch(e){
+    RepoLogger.warn('Could not cache tree in sessionStorage (probably too large)', e);
   }
-  if(!r.ok) {
-    RepoLogger.error(`GitHub API error status: ${r.status}`);
-    throw new Error('github-error-'+r.status);
-  }
-  const data=await r.json();
-  cachedSha=data.commit.sha;
-  RepoLogger.info('Branch SHA resolved successfully', { sha: cachedSha });
-  return cachedSha;
 }
 
 async function fetchFlatFileList(){
-  RepoLogger.info('Fetching flat file list from jsDelivr CDN...');
-  const sha=await resolveBranchSha();
-  const url=`https://data.jsdelivr.com/v1/package/gh/${owner}/${repo}@${sha}/flat`;
-  const r=await fetch(url);
-  if(!r.ok) {
-    RepoLogger.error(`jsDelivr CDN error status: ${r.status}`, { url });
-    throw new Error('jsdelivr-error-'+r.status);
+  const cached=readCache();
+  if(cached){
+    RepoLogger.info('Using cached file list', { fileCount: cached.length });
+    return cached;
   }
+
+  RepoLogger.info('Fetching recursive tree from GitHub Trees API...', { owner, repo, branch });
+  const url=`https://api.github.com/repos/${owner}/${repo}/git/trees/${encodeURIComponent(branch)}?recursive=1`;
+  const r=await fetch(url,{headers:{'Accept':'application/vnd.github+json'}});
+
+  if(r.status===403||r.status===429){
+    const remaining=r.headers.get('x-ratelimit-remaining');
+    RepoLogger.error(`GitHub API refused the request (status ${r.status}, rate-limit remaining: ${remaining})`, { url });
+    throw new Error('github-rate-limited');
+  }
+  if(!r.ok){
+    RepoLogger.error(`GitHub API error status: ${r.status}`, { url });
+    throw new Error('github-error-'+r.status);
+  }
+
   const data=await r.json();
-  RepoLogger.info('Flat file list fetched successfully', { fileCount: data.files ? data.files.length : 0 });
-  return data.files||[];
+  if(data.truncated){
+    // Trees API caps out around 100k entries / 7 MB. Whatever we got is still usable.
+    RepoLogger.warn('GitHub returned a truncated tree — some files may be missing from the listing.');
+  }
+
+  const files=(data.tree||[])
+    .filter(e=>e.type==='blob')
+    .map(e=>({name:'/'+e.path,size:e.size}));
+
+  RepoLogger.info('Tree fetched successfully', { fileCount: files.length, truncated: !!data.truncated });
+  writeCache(files);
+  return files;
 }
 
 function buildTree(files){
@@ -551,7 +580,7 @@ function renderTree(container,segments){
     if(item.type==='dir'){
       const div=document.createElement('div');
       div.className='folder-row';
-      div.innerHTML=`<i class="ti ti-folder-filled" aria-hidden="true"></i><span class="name">${item.name}</span><i class="ti ti-chevron-down chevron" aria-hidden="true"></i>`;
+      div.innerHTML=`<i class="ti ti-folder-filled" aria-hidden="true"></i><span class="name">${escapeHtml(item.name)}</span><i class="ti ti-chevron-down chevron" aria-hidden="true"></i>`;
       const children=document.createElement('div');
       children.className='children';
       children.style.display='none';
@@ -612,9 +641,9 @@ async function navigate(segments){
     await ensureTreeLoaded();
   }catch(e){
     const msg=(e&&e.message==='github-rate-limited')
-      ? "GitHub's API is rate-limiting this branch lookup right now — try again in a bit."
+      ? "GitHub's API is rate-limiting this request right now — try again in a bit."
       : 'Could not load the repo listing.';
-    treeEl.innerHTML='<div class="error-state">'+msg+'<span class="retry" onclick="navigate('+JSON.stringify(segments)+')">Retry</span></div>';
+    treeEl.innerHTML='<div class="error-state">'+msg+'<span class="retry" onclick="navigate('+JSON.stringify(segments).replace(/"/g,'&quot;')+')">Retry</span></div>';
     return;
   }
   renderTree(treeEl,segments);
