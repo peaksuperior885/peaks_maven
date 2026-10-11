@@ -1,0 +1,76 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.github.mstrobel",
+    "module": "Procyon.Expressions",
+    "version": "0.6.3-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.1.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 8,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "Procyon.Expressions-0.6.3-SNAPSHOT.jar",
+          "url": "Procyon.Expressions-0.6.3-SNAPSHOT.jar",
+          "size": 274473,
+          "sha512": "b584caadb14bb908b343478524544e5d538316fbd04f2a67ce7629706151b1bcc563e8fdf2f4432cbb6ad929fec838f25a105eafe28bcfef90a86cc1b55e0b03",
+          "sha256": "73980dec7b326b1871da61a35c1f7080c18506c1bab51f24913b92c21c0a9849",
+          "sha1": "cec5d813f0509a0f89cd40a08d695e60e2198f4a",
+          "md5": "0dfd7ac739ce054c70b88e15bba694ce"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 8,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "com.github.mstrobel",
+          "module": "Procyon.Core",
+          "version": {
+            "requires": "0.6.3-SNAPSHOT"
+          }
+        },
+        {
+          "group": "com.github.mstrobel",
+          "module": "Procyon.Reflection",
+          "version": {
+            "requires": "0.6.3-SNAPSHOT"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "Procyon.Expressions-0.6.3-SNAPSHOT.jar",
+          "url": "Procyon.Expressions-0.6.3-SNAPSHOT.jar",
+          "size": 274473,
+          "sha512": "b584caadb14bb908b343478524544e5d538316fbd04f2a67ce7629706151b1bcc563e8fdf2f4432cbb6ad929fec838f25a105eafe28bcfef90a86cc1b55e0b03",
+          "sha256": "73980dec7b326b1871da61a35c1f7080c18506c1bab51f24913b92c21c0a9849",
+          "sha1": "cec5d813f0509a0f89cd40a08d695e60e2198f4a",
+          "md5": "0dfd7ac739ce054c70b88e15bba694ce"
+        }
+      ]
+    }
+  ]
+}

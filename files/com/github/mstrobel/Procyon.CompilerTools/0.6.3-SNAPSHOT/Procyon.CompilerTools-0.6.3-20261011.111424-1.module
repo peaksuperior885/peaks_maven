@@ -1,0 +1,69 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.github.mstrobel",
+    "module": "Procyon.CompilerTools",
+    "version": "0.6.3-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.1.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 8,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "Procyon.CompilerTools-0.6.3-SNAPSHOT.jar",
+          "url": "Procyon.CompilerTools-0.6.3-SNAPSHOT.jar",
+          "size": 1738383,
+          "sha512": "ea2213eb80e33824396692c331c0bedce70a3b149b5c1a5c5cde08c5e5f9aa5e05891892a6a5241551295eee5f0c06b38720dcf5a96b5aa69ccd95a2661824e1",
+          "sha256": "4f5e21c58a1758b655ce46efd6ad18c35378878997bddee46e20a5cb4ca40ebc",
+          "sha1": "f969ddf0491cdfed245ff03879195910d69295dd",
+          "md5": "e3de6f0d253b31cca6b253c7ba0849c0"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 8,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "com.github.mstrobel",
+          "module": "Procyon.Core",
+          "version": {
+            "requires": "0.6.3-SNAPSHOT"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "Procyon.CompilerTools-0.6.3-SNAPSHOT.jar",
+          "url": "Procyon.CompilerTools-0.6.3-SNAPSHOT.jar",
+          "size": 1738383,
+          "sha512": "ea2213eb80e33824396692c331c0bedce70a3b149b5c1a5c5cde08c5e5f9aa5e05891892a6a5241551295eee5f0c06b38720dcf5a96b5aa69ccd95a2661824e1",
+          "sha256": "4f5e21c58a1758b655ce46efd6ad18c35378878997bddee46e20a5cb4ca40ebc",
+          "sha1": "f969ddf0491cdfed245ff03879195910d69295dd",
+          "md5": "e3de6f0d253b31cca6b253c7ba0849c0"
+        }
+      ]
+    }
+  ]
+}

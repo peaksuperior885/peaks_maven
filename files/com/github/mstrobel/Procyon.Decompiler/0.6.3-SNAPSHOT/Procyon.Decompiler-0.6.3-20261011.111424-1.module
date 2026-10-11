@@ -1,0 +1,83 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.github.mstrobel",
+    "module": "Procyon.Decompiler",
+    "version": "0.6.3-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.1.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 8,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "Procyon.Decompiler-0.6.3-SNAPSHOT.jar",
+          "url": "Procyon.Decompiler-0.6.3-SNAPSHOT.jar",
+          "size": 2039711,
+          "sha512": "c2240d026a50b4c6098153378c3cca6cad5c2838ee2d17e7ef77f580d19a3b2067a57ed18866f1a5b001faa9c76bb24a7680ad70eac70b8114ffeab06358c6cb",
+          "sha256": "e71c60adc6b25c61afff9361fc71d0fc585c04aa6605cefe50d3759d43b80fda",
+          "sha1": "00c06fbc603202be6f431e617aab9bf1f4ceb373",
+          "md5": "c2a1880da96fdd6301a6d7e15baf05ab"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 8,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "com.beust",
+          "module": "jcommander",
+          "version": {
+            "requires": "1.82"
+          }
+        },
+        {
+          "group": "com.github.mstrobel",
+          "module": "Procyon.Core",
+          "version": {
+            "requires": "0.6.3-SNAPSHOT"
+          }
+        },
+        {
+          "group": "com.github.mstrobel",
+          "module": "Procyon.CompilerTools",
+          "version": {
+            "requires": "0.6.3-SNAPSHOT"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "Procyon.Decompiler-0.6.3-SNAPSHOT.jar",
+          "url": "Procyon.Decompiler-0.6.3-SNAPSHOT.jar",
+          "size": 2039711,
+          "sha512": "c2240d026a50b4c6098153378c3cca6cad5c2838ee2d17e7ef77f580d19a3b2067a57ed18866f1a5b001faa9c76bb24a7680ad70eac70b8114ffeab06358c6cb",
+          "sha256": "e71c60adc6b25c61afff9361fc71d0fc585c04aa6605cefe50d3759d43b80fda",
+          "sha1": "00c06fbc603202be6f431e617aab9bf1f4ceb373",
+          "md5": "c2a1880da96fdd6301a6d7e15baf05ab"
+        }
+      ]
+    }
+  ]
+}

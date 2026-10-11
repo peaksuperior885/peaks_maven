@@ -1,0 +1,60 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.github.mstrobel",
+    "module": "Procyon.Core",
+    "version": "0.6.3-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.1.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 8,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "Procyon.Core-0.6.3-SNAPSHOT.jar",
+          "url": "Procyon.Core-0.6.3-SNAPSHOT.jar",
+          "size": 191448,
+          "sha512": "7a5861c840ca94aaa350d4f42d492d5ffcc5bec50df52401f275c06ffba4fd45dae34402128b2d97168207a8eda2f35f6e98fc8afed1ebb332d556a867ba2b3c",
+          "sha256": "84c4520c09bfec45c0bb3d2a0980ad7e2a5593da55829c64a2067e9e1b43910c",
+          "sha1": "5e243e3a170da4300113d5e873faa1d60d089067",
+          "md5": "3c3d251b6c8de62def60f0a31e9e6309"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 8,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "Procyon.Core-0.6.3-SNAPSHOT.jar",
+          "url": "Procyon.Core-0.6.3-SNAPSHOT.jar",
+          "size": 191448,
+          "sha512": "7a5861c840ca94aaa350d4f42d492d5ffcc5bec50df52401f275c06ffba4fd45dae34402128b2d97168207a8eda2f35f6e98fc8afed1ebb332d556a867ba2b3c",
+          "sha256": "84c4520c09bfec45c0bb3d2a0980ad7e2a5593da55829c64a2067e9e1b43910c",
+          "sha1": "5e243e3a170da4300113d5e873faa1d60d089067",
+          "md5": "3c3d251b6c8de62def60f0a31e9e6309"
+        }
+      ]
+    }
+  ]
+}
