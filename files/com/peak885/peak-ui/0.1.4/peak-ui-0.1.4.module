@@ -1,0 +1,147 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.peak885",
+    "module": "peak-ui",
+    "version": "0.1.4",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.7"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "org.joml",
+          "module": "joml",
+          "version": {
+            "requires": "1.10.8"
+          }
+        },
+        {
+          "group": "org.lwjgl",
+          "module": "lwjgl",
+          "version": {
+            "requires": "3.3.4"
+          }
+        },
+        {
+          "group": "org.lwjgl",
+          "module": "lwjgl-opengl",
+          "version": {
+            "requires": "3.3.4"
+          }
+        },
+        {
+          "group": "org.lwjgl",
+          "module": "lwjgl-freetype",
+          "version": {
+            "requires": "3.3.4"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "peak-ui-0.1.4.jar",
+          "url": "peak-ui-0.1.4.jar",
+          "size": 304156,
+          "sha512": "d6d6ea0e2c0eeeb11cbc3c0f2580d18230112bfb1bcba1e3463a1c6d69670c171861357f300bd4b2e171da30a54eb7f5d256193349ed39772ae1bf44b9ddd7ff",
+          "sha256": "54a42da691996ed9e52fcf05a7d5e6971c5b414184779a99dee5fdeab7b6b9f9",
+          "sha1": "35e8a181f65138bfe62d7523c319f6e39b7216d3",
+          "md5": "8af78de8ab9fa86bf136d1d07bc59ee7"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "org.anarres",
+          "module": "jcpp",
+          "version": {
+            "requires": "1.4.14"
+          }
+        },
+        {
+          "group": "org.joml",
+          "module": "joml",
+          "version": {
+            "requires": "1.10.8"
+          }
+        },
+        {
+          "group": "org.lwjgl",
+          "module": "lwjgl",
+          "version": {
+            "requires": "3.3.4"
+          }
+        },
+        {
+          "group": "org.lwjgl",
+          "module": "lwjgl-opengl",
+          "version": {
+            "requires": "3.3.4"
+          }
+        },
+        {
+          "group": "org.lwjgl",
+          "module": "lwjgl-freetype",
+          "version": {
+            "requires": "3.3.4"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "peak-ui-0.1.4.jar",
+          "url": "peak-ui-0.1.4.jar",
+          "size": 304156,
+          "sha512": "d6d6ea0e2c0eeeb11cbc3c0f2580d18230112bfb1bcba1e3463a1c6d69670c171861357f300bd4b2e171da30a54eb7f5d256193349ed39772ae1bf44b9ddd7ff",
+          "sha256": "54a42da691996ed9e52fcf05a7d5e6971c5b414184779a99dee5fdeab7b6b9f9",
+          "sha1": "35e8a181f65138bfe62d7523c319f6e39b7216d3",
+          "md5": "8af78de8ab9fa86bf136d1d07bc59ee7"
+        }
+      ]
+    },
+    {
+      "name": "sourcesElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "peak-ui-0.1.4-sources.jar",
+          "url": "peak-ui-0.1.4-sources.jar",
+          "size": 247019,
+          "sha512": "501fb14d5e77cb2a2bb1051dc368001f335ddc0f53da1e0121681d65f94c3e014ea194640dd99c5a85e7b5dd019ffcfa57a017875bc4d49e5a5eb81f11878d22",
+          "sha256": "6c7881072b59fb78bf8214e097ed6930dbca3dc4778111665c2ed69d80bde18a",
+          "sha1": "42639887b81ae588a00788b9d0cb57f9f3200851",
+          "md5": "f34883d3bbecff744fd38aaf8ae369ba"
+        }
+      ]
+    }
+  ]
+}
