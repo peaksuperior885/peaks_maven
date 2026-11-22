@@ -1,0 +1,208 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "dev.peak885.gradle",
+    "module": "ForgeGradle",
+    "version": "0.1.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.1.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 8,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "ForgeGradle-0.1.0-plain.jar",
+          "url": "ForgeGradle-0.1.0-plain.jar",
+          "size": 523132,
+          "sha512": "2d04766ed4dc6c31f0367b925350d31bf6c28bfae8a48cc4cb2e8a09e02efea1fd6a53588229dc4d9cf50806a7d14f8244e19426ea7a840dd358b648089b912f",
+          "sha256": "b3c90db806b4cdf7e02f6e86d222468e5fd7bb1e0296c054a93d019ac3d5cd78",
+          "sha1": "6d8cf3fdb89a0c4daa8342cd2e7fb4dcccf5e2ff",
+          "md5": "7336b43f989afa25d6e63356d26da1e3"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 8,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "org.ow2.asm",
+          "module": "asm-debug-all",
+          "version": {
+            "requires": "5.0.3"
+          }
+        },
+        {
+          "group": "com.google.guava",
+          "module": "guava",
+          "version": {
+            "requires": "18.0"
+          }
+        },
+        {
+          "group": "net.sf.opencsv",
+          "module": "opencsv",
+          "version": {
+            "requires": "2.3"
+          }
+        },
+        {
+          "group": "com.cloudbees",
+          "module": "diff4j",
+          "version": {
+            "requires": "1.1"
+          }
+        },
+        {
+          "group": "com.github.abrarsyed.jastyle",
+          "module": "jAstyle",
+          "version": {
+            "requires": "1.3"
+          }
+        },
+        {
+          "group": "net.sf.trove4j",
+          "module": "trove4j",
+          "version": {
+            "requires": "2.1.0"
+          }
+        },
+        {
+          "group": "com.github.jponge",
+          "module": "lzma-java",
+          "version": {
+            "requires": "1.3"
+          }
+        },
+        {
+          "group": "com.nothome",
+          "module": "javaxdelta",
+          "version": {
+            "requires": "2.0.1"
+          }
+        },
+        {
+          "group": "com.google.code.gson",
+          "module": "gson",
+          "version": {
+            "requires": "2.2.4"
+          }
+        },
+        {
+          "group": "com.github.tony19",
+          "module": "named-regexp",
+          "version": {
+            "requires": "0.2.3"
+          }
+        },
+        {
+          "group": "org.apache.httpcomponents",
+          "module": "httpclient",
+          "version": {
+            "requires": "4.3.3"
+          }
+        },
+        {
+          "group": "org.apache.httpcomponents",
+          "module": "httpmime",
+          "version": {
+            "requires": "4.3.3"
+          }
+        },
+        {
+          "group": "net.md-5",
+          "module": "SpecialSource",
+          "version": {
+            "requires": "1.7.4"
+          }
+        },
+        {
+          "group": "de.oceanlabs.mcp",
+          "module": "RetroGuard",
+          "version": {
+            "requires": "3.6.6"
+          }
+        },
+        {
+          "group": "de.oceanlabs.mcp",
+          "module": "mcinjector",
+          "version": {
+            "requires": "3.4-SNAPSHOT"
+          }
+        },
+        {
+          "group": "net.minecraftforge.srg2source",
+          "module": "Srg2Source",
+          "version": {
+            "requires": "3.3-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.eclipse.jdt",
+          "module": "org.eclipse.jdt.core",
+          "version": {
+            "requires": "3.10.0"
+          }
+        },
+        {
+          "group": "net.minecraftforge",
+          "module": "fernflower",
+          "version": {
+            "requires": "2.0-SNAPSHOT"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "ForgeGradle-0.1.0-plain.jar",
+          "url": "ForgeGradle-0.1.0-plain.jar",
+          "size": 523132,
+          "sha512": "2d04766ed4dc6c31f0367b925350d31bf6c28bfae8a48cc4cb2e8a09e02efea1fd6a53588229dc4d9cf50806a7d14f8244e19426ea7a840dd358b648089b912f",
+          "sha256": "b3c90db806b4cdf7e02f6e86d222468e5fd7bb1e0296c054a93d019ac3d5cd78",
+          "sha1": "6d8cf3fdb89a0c4daa8342cd2e7fb4dcccf5e2ff",
+          "md5": "7336b43f989afa25d6e63356d26da1e3"
+        }
+      ]
+    },
+    {
+      "name": "shadowRuntimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "shadowed",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "ForgeGradle-0.1.0.jar",
+          "url": "ForgeGradle-0.1.0.jar",
+          "size": 17644551,
+          "sha512": "626f5b9f5a85945dd450588552d0ba327bb48c7637afd7f1b9b2c0ca03b4eb85fd277d6bb39b196717a77f3bfc5624c6c33c40198dbf62405a2d9776f7f9f8c4",
+          "sha256": "861cca06cae6a2f01445817fb08b31fada83414190b46b3889b0d5820f69ed1b",
+          "sha1": "c57431a03b4266345c9938fcb5e9868bc6451a52",
+          "md5": "8f9b1ceaa69ea90f43cead85dcf481fe"
+        }
+      ]
+    }
+  ]
+}
