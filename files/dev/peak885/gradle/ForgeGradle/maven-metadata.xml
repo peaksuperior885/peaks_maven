@@ -3,11 +3,11 @@
   <groupId>dev.peak885.gradle</groupId>
   <artifactId>ForgeGradle</artifactId>
   <versioning>
-    <latest>0.1.2</latest>
-    <release>0.1.2</release>
+    <latest>0.1.3</latest>
+    <release>0.1.3</release>
     <versions>
-      <version>0.1.2</version>
+      <version>0.1.3</version>
     </versions>
-    <lastUpdated>20261123215644</lastUpdated>
+    <lastUpdated>20261125180349</lastUpdated>
   </versioning>
 </metadata>
